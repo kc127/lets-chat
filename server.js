@@ -15,31 +15,15 @@ const io = require('socket.io')(server, {
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, '..', '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.get('/', (req, res) => {
   res.send('Server is running.');
 });
 
-io.on('connection', (socket) => {
-  socket.emit('me', socket.id);
 
-  socket.on('disconnect', () => {
-    socket.broadcast.emit('callended');
-  });
-
-  socket.on('calluser', ({
-    userToCall, signalData, from, name,
-  }) => {
-    io.to(userToCall).emit('calluser', { signal: signalData, from, name });
-  });
-
-  socket.on('answercall', (data) => {
-    io.to(data.to).emit('callaccepted', data.signal);
-  });
-});
 
 server.listen(PORT, () => {
   console.log(`Server listening in ${PORT}`);
