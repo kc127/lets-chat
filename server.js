@@ -23,8 +23,6 @@ app.get('/', (req, res) => {
   res.send('Server is running.');
 });
 
-
-
 server.listen(PORT, () => {
   console.log(`Server listening in ${PORT}`);
 });
