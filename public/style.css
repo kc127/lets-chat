@@ -1,0 +1,72 @@
+:root {
+  --dark-color-a: #667aff;
+  --dark-color-b: #7386ff;
+  --light-color: #e6e9ff;
+  --success-color:#5cb85c;
+  --error-color:#d9534f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:'Times New Roman', Times, serif;
+  font-size: 16px;
+  background: var(--light-color);
+  margin: 20px;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 5px 15px;
+  background: var(--light-color);
+  color: var(--dark-color-a);
+  border: 0;
+  font-size: 17px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 80px auto;
+  color: #fff;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background: var(--dark-color-a);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.main {
+  padding: 30px 40px;
+  background: var(--dark-color-b);
+}
+
+.main label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.main input[type="text"] {
+  font-size: 16px;
+  padding: 5px;
+  height: 40px;
+  width: 100%;
+}
+
+.main select {
+  font-size: 16px;
+  padding: 5px;
+  height: 40px;
+  width: 100%;
+}
+
+.main .btn {
+  margin-top: 20px;
+  width: 100%;
+}
