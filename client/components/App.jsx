@@ -2,13 +2,11 @@ import React from 'react';
 import Form from './Form';
 
 const App = () => (
-  <div className="join-container">
-    <header className="join-header">
+  <div className="container">
+    <header className="header">
       <h1>Zoomish</h1>
     </header>
-    <div>
-      <Form />
-    </div>
+    <Form />
   </div>
 );
 
