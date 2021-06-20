@@ -22,17 +22,40 @@ body {
 .btn {
   cursor: pointer;
   padding: 5px 15px;
-  background: var(--light-color);
+  background: white;
   color: var(--dark-color-a);
-  border: 0;
   font-size: 17px;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.end-btn {
+  cursor: pointer;
+  padding: 5px 15px;
+  background: red;
+  color: white;
+  font-size: 17px;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.answer-btn {
+  cursor: pointer;
+  padding: 5px 15px;
+  background: green;
+  color: white;
+  font-size: 17px;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .container {
   max-width: 700px;
   margin: 80px auto;
-  color: green;
-  display: flex;
+  color: #fff;
 }
 
 .header {
@@ -45,34 +68,26 @@ body {
 }
 
 .video {
-
+  width: 100%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
-/* .main {
-  padding: 30px 40px;
-  background: var(--dark-color-b);
+.myId {
+  color: black;
+  display: flex;
+  flex-direction: column;
 }
 
-.main label {
+.myId label {
   display: block;
   margin-bottom: 5px;
 }
 
-.main input[type="text"] {
+.myId input[type="text"] {
   font-size: 16px;
   padding: 5px;
   height: 40px;
   width: 100%;
 }
 
-.main select {
-  font-size: 16px;
-  padding: 5px;
-  height: 40px;
-  width: 100%;
-}
-
-.main .btn {
-  margin-top: 20px;
-  width: 100%;
-} */
