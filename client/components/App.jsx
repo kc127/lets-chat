@@ -1,6 +1,7 @@
+/* eslint-disable no-shadow */
 import React, { useEffect, useRef, useState } from 'react';
 
-import { copyToClipboard } from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Peer from 'simple-peer';
 import io from 'socket.io-client';
 
@@ -26,9 +27,9 @@ function App() {
   useEffect(() => {
     /* allows us to use webcam */
     // eslint-disable-next-line no-undef
-    navigator.mediaDevices.getUserMedia({ vide: true, audio: true }).then((stream) => {
-      setStream(stream);
-      myVideo.current.srcObject = stream;
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream1) => {
+      setStream(stream1);
+      myVideo.current.srcObject = stream1;
     });
 
     socket.on('me', (id) => {
@@ -58,45 +59,45 @@ function App() {
         from: me,
         name,
       });
-
-      /* other user's video */
-      peer.on('stream', (stream) => {
-        userVideo.current.srcObject = stream;
-      });
-
-      socket.on('callAccepted', (signal) => {
-        setCallAccepted(true);
-        peer.signal(signal);
-      });
-
-      /* when we end the call, we can disable the connectionRef */
-      connectionRef.current = peer;
+    });
+    /* other user's video */
+    peer.on('stream', (stream) => {
+      userVideo.current.srcObject = stream;
     });
 
-    /* answer the call */
-    const answerCall = () => {
+    socket.on('callAccepted', (signal) => {
       setCallAccepted(true);
-      const peer1 = new Peer({
-        initiator: false,
-        trickle: false,
-        stream,
+      peer.signal(signal);
+    });
+
+    /* when we end the call, we can disable the connectionRef */
+    connectionRef.current = peer;
+  };
+
+  /* answer the call */
+  const answerCall = () => {
+    setCallAccepted(true);
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream,
+    });
+
+    peer.on('signal', (data) => {
+      socket.emit('answerCall', {
+        signal: data,
+        to: caller,
       });
+    });
 
-      peer.on('signal', (data) => {
-        socket.emit('answerCall', {
-          signal: data,
-          to: caller,
-        });
-      });
+    // eslint-disable-next-line no-shadow
+    peer.on('stream', (stream) => {
+      userVideo.current.srcObject = stream;
+    });
 
-      peer.on('stream', (stream) => {
-        userVideo.current.srcObject = stream;
-      });
+    peer.signal(callerSignal);
 
-      peer.signal(callerSignal);
-
-      connectionRef.current = peer;
-    };
+    connectionRef.current = peer;
   };
 
   const leaveCall = () => {
@@ -112,24 +113,59 @@ function App() {
       </header>
       <div className="video-container">
         <div className="video">
-          {stream && <video playsInline muted ref={myVideo} autoPlay />}
+          {stream && <video className="video" playsInline muted ref={myVideo} autoPlay />}
         </div>
         <div className="video">
           {callAccepted && !callEnded
-            ? <video playsInline ref={userVideo} autoPlay /> : null}
+            ? <video className="video" playsInline ref={userVideo} autoPlay /> : null}
         </div>
       </div>
       <div className="myId">
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          id="caller-id"
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <form>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            id="caller-id"
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <CopyToClipboard text={me}>
+            <button className="btn" type="button">Copy ID</button>
+          </CopyToClipboard>
+          <label htmlFor="idToCall">ID to Call</label>
+          <input
+            type="text"
+            name="idToCall"
+            value={idToCall}
+            id="caller-id"
+            onChange={(e) => setIdToCall(e.target.value)}
+            required
+          />
+        </form>
+        <div className="call-button">
+          {callAccepted && !callEnded ? (
+            <button className="end-btn" type="submit" onClick={leaveCall}>End Call</button>
+          ) : (
+            <button className="btn" type="submit" onClick={() => callUser(idToCall)}>Call</button>
+          )}
+          {/* {idToCall} */}
+        </div>
+        <div>
+          {receivingCall && !callAccepted ? (
+            <div>
+              <h1>
+                {name}
+                {' '}
+                is calling...
+              </h1>
+              <button className="answer-btn" type="submit" onClick={answerCall}>Answer</button>
+            </div>
+          ) : null}
+        </div>
       </div>
+
     </div>
   );
 }
